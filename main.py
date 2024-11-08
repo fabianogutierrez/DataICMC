@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.preprocessing import OneHotEncoder
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 
 class Modelo():
@@ -48,7 +49,9 @@ class Modelo():
         for col in self.df.columns.tolist():
             print('Número de missing na coluna {}: {}'.format(col, self.df[col].isnull().sum()))
 
-     
+        self.df.hist(figsize=(10, 8))
+       
+        plt.show()
 
         pass
 
