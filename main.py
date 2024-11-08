@@ -68,10 +68,10 @@ class Modelo():
 
         pass
 
-    def TreinaSVN(self,X,y):
+    def TreinaSVM(self,X,y):
         # SVM
         self.svm = SVC()
-        X_train, self.X_test_svn, y_train, self.y_test_svn = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, self.X_test_svm, y_train, self.y_test_svm = train_test_split(X, y, test_size=0.2, random_state=42)
 
         self.svm.fit(X_train, y_train)
 
@@ -98,18 +98,13 @@ class Modelo():
         
         Nota: Esta função deve ser ajustada conforme o modelo escolhido.
         """
-        X = self.df[['SepalLengthCm', 'SepalWidthCm','PetalLengthCm','PetalWidthCm']]  
-        y = self.df['Species']
+        self.X = self.df[['SepalLengthCm', 'SepalWidthCm','PetalLengthCm','PetalWidthCm']]  
+        self.y = self.df['Species']
 
-        self.TreinaReg(X, y)
-        self.TreinaSVN(X, y)
-        self.TreinaArvoreDevisao(X, y)
+        self.TreinaReg(self.X, self.y)
+        self.TreinaSVM(self.X, self.y)
+        self.TreinaArvoreDevisao(self.X, self.y)
         
-#        scores = cross_val_score(self.arvoredecisao, X, y, cv=5)
-#        print("Acurácia média(arvore):", scores.mean())
-
-#        scores = cross_val_score(self.reg, X, y, cv=5)
-#        print("Acurácia média(regressao):", scores.mean())
 
         pass
 
@@ -130,11 +125,13 @@ class Modelo():
 
     def ModeloSVM(self):
         # Previsões com SVM
-        y_pred_svm = self.svm.predict(self.X_test_svn)
+        y_pred_svm = self.svm.predict(self.X_test_svm)
         print("\nModelo SVM")
-        print("\nAccuracy (SVM):", accuracy_score(self.y_test_svn, y_pred_svm))
-        print("Classification Report (SVM):\n", classification_report(self.y_test_svn, y_pred_svm))
-        print("Confusion Matrix (SVM):\n", confusion_matrix(self.y_test_svn, y_pred_svm))
+        print("\nAccuracy (SVM):", accuracy_score(self.y_test_svm, y_pred_svm))
+        print("Classification Report (SVM):\n", classification_report(self.y_test_svm, y_pred_svm))
+        print("Confusion Matrix (SVM):\n", confusion_matrix(self.y_test_svm, y_pred_svm))
+        print("Acurácia média(SVM):", cross_val_score(self.svm, self.X, self.y, cv=5).mean())
+
         pass
 
     def ModeloLinear(self):
@@ -142,11 +139,13 @@ class Modelo():
         print(self.X_test_reg)
         y_pred_reg = self.reg.predict(self.X_test_reg)
         print(y_pred_reg)
-        y_pred_reg = self.encoder.inverse_transform(y_pred_reg)
+#        y_pred_reg = self.encoder.inverse_transform(y_pred_reg)
         # Avaliação
         print("\nModelo Linear")
         print("Accuracy (Linear Regression):", accuracy_score(self.y_test_reg, y_pred_reg))
         print("Classification Report (Linear Regression):\n", classification_report(self.y_test_reg, y_pred_reg))
+        print("Acurácia média(regressao):", cross_val_score(self.reg, self.X, self.y, cv=5).mean())
+
         #print("Confusion Matrix (Linear Regression):\n", confusion_matrix(self.y_test_reg, y_pred_reg))
 
         pass
@@ -168,6 +167,7 @@ class Modelo():
         print("Accuracy (Decision Tree):", accuracy_score(self.y_test_dt, y_pred_dt))
         print("\nClassification Report (Decision Tree):\n", classification_report(self.y_test_dt, y_pred_dt)) 
         print("\nConfusion Matrix (Decision Tree):\n", confusion_matrix(self.y_test_dt, y_pred_dt))        
+        print("Acurácia média(arvore):", cross_val_score(self.arvoredecisao, self.X, self.y, cv=5).mean())
         pass
 
     def Train(self):
