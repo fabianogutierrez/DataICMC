@@ -146,22 +146,11 @@ class Modelo():
         print("Classification Report (Linear Regression):\n", classification_report(self.y_test_reg, y_pred_reg))
         print("Acurácia média(regressao):", cross_val_score(self.reg, self.X, self.y, cv=5).mean())
 
-        #print("Confusion Matrix (Linear Regression):\n", confusion_matrix(self.y_test_reg, y_pred_reg))
-
         pass
 
     def ModeloArvore(self):
         y_pred_dt = self.arvoredecisao.predict(self.X_test_dt)
-     #   accuracy = accuracy_score(self.y_test, y_pred_dt)
-     #   precision = precision_score(self.y_test, y_pred_dt, average='weighted')
-     #   recall = recall_score(self.y_test, y_pred_dt, average='weighted')
-     #   f1 = f1_score(self.y_test, y_pred_dt, average='weighted')
-     #   conf_matrix = confusion_matrix(self.y_test, y_pred_dt)
-     #   print("Acurácia: ",accuracy)
-     #   print("Precisão: ",precision)
-     #   print("Recall: ",recall)
-     #   print("F1-score: ",f1)
-     #   print("Matriz de confusão: ",conf_matrix)
+    
         # Avaliar o modelo
         print("\nModelo Árvore de Decisão")
         print("Accuracy (Decision Tree):", accuracy_score(self.y_test_dt, y_pred_dt))
